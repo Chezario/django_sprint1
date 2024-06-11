@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseNotFound
 
 
 posts = [
@@ -45,6 +46,9 @@ posts = [
 ]
 
 
+posts_dict = {post['id']: post for post in posts}
+
+
 def index(request):
     reversed_posts = list(reversed(posts))
     context = {'posts': reversed_posts}
@@ -53,11 +57,14 @@ def index(request):
 
 
 def post_detail(request, pk):
-    context = {
-        'post': posts[pk]
-    }
-    template = 'blog/detail.html'
-    return render(request, template, context)
+    if pk in posts_dict:
+        context = {
+            'post': posts[pk]
+        }
+        template = 'blog/detail.html'
+        return render(request, template, context)
+    else:
+        return HttpResponseNotFound('Page not found')
 
 
 def category_posts(request, category_slug):
