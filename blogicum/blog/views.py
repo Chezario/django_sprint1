@@ -46,7 +46,7 @@ posts = [
 ]
 
 
-posts_dict = {post['id']: post for post in posts}
+POST_DICT = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -57,14 +57,13 @@ def index(request):
 
 
 def post_detail(request, pk):
-    if pk in posts_dict:
+    if pk in POST_DICT:
         context = {
-            'post': posts[pk]
+            'post': POST_DICT[pk]
         }
         template = 'blog/detail.html'
         return render(request, template, context)
-    else:
-        return HttpResponseNotFound('Page not found')
+    return HttpResponseNotFound('Page not found')
 
 
 def category_posts(request, category_slug):
